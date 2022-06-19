@@ -6,16 +6,16 @@
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
           <!-- 没有用户名：未登录 -->
-          <p v-if="!userName">
+          <p>
             <span>请</span>
             <!-- 声明式导航：router-link务必要有to属性 -->
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
           </p>
           <!-- 登录了 -->
-          <p v-else>
-            <a>{{userName}}</a>
-            <a class="register" @click="logout">退出登录</a>
+          <p>
+            <a>用户名</a>
+            <a class="register">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -35,7 +35,7 @@
       <h1 class="logoArea">
         <!-- router-link组件本省就是一个a标签 -->
         <router-link to="/home" class="logo">
-          <img src="@/assets/img/logo.png" alt="" />
+          <img src="@/assets/img/logo.png" alt=""/>
         </router-link>
       </h1>
       <div class="searchArea">
@@ -44,15 +44,15 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="keyword"
+            v-model="keywords"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
             type="button"
-            @click="goSearch"
-          >
-            搜索
+            @click="searchClick"
+          >搜索
           </button>
+
         </form>
       </div>
     </div>
@@ -61,9 +61,30 @@
 
 <script>
 export default {
-  name: "header",
-
-
+  name: "headers",
+  methods: {
+    searchClick() {
+      /*路由传参  携带参数*/
+      /*    this.$router.push('/search'+this.keywords)*/
+      /*     this.$router.push(`/search/${this.keywords}?k=${this.keywords.toUpperCase()}`)*/
+      /*对象写法*/
+      this.$router.push({
+        /*给路由起一个名字    name: 'search',，*/
+        name: 'search',
+        params: {
+          keywords: this.keywords
+        },
+        query: {
+          k: this.keywords.toUpperCase()
+        }
+      })
+    }
+  },
+  data() {
+    return {
+      keywords: ''
+    }
+  }
 };
 </script>
 
@@ -119,7 +140,7 @@ export default {
       .logo {
         img {
           width: 175px;
-          margin: 25px 45px;
+          margin: 13px 45px;
         }
       }
     }
