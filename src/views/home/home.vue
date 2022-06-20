@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import index from "@/components/content/TypeNav/index" //图标下面的导航栏
-import listcontainer from "components/content/listContainer/listcontainer"; //轮播图和商品汇快报模块
+import index from "components/content/TypeNav/index" //图标下面的导航栏
+import listcontainer from "components/content/listContainer/listcontainer"; //商品汇快报模块
 import recommend from "components/content/TodayRecommend/recommend";//今日推荐模块
 import rank from "components/content/Rank/rank";//排行模块
 import like from "components/content/GuessLike/like";//猜你喜欢模块

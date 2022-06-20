@@ -12,5 +12,16 @@ module.exports={
         .set('components',resolve('./src/components'))
         .set('views',resolve('./src/views'))
         .set('assets',resolve('./src/assets'))
+  },
+  productionSourceMap:false,
+
+  /*代理跨域设置*/
+  devServer:{
+    proxy:{
+      "/api":{
+        target:'http://gmall-h5-api.atguigu.cn',
+        pathRewrite:{'^/api':''}
+      }
+    }
   }
 }

@@ -4,20 +4,21 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
+
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-              <img src="@/assets/img/home/banner1.jpg" />
+            <swiper>
+              <swiper-item>
+                <img src="@/assets/img/home/banner1.jpg"  alt=""/>
+              </swiper-item>
+            </swiper>
             </div>
           </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
         </div>
       </div>
+      <!--banner轮播-->
+
       <div class="right">
         <div class="news">
           <h4>
@@ -94,7 +95,7 @@
           </li>
         </ul>
         <div class="ads">
-          <img src="@/assets/img/home/ad1.png" />
+          <img src="@/assets/img/home/ad1.png"  alt=""/>
         </div>
       </div>
     </div>
@@ -102,8 +103,13 @@
 </template>
 
 <script>
+import { Swiper, SwiperItem} from "components/common/swiper/index"//封装的轮播模块
 export default {
-  name: "listcontainer"
+  name: "listcontainer",
+  components:{
+    Swiper,
+    SwiperItem
+  }
 }
 </script>
 
