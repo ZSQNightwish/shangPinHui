@@ -17,6 +17,7 @@ import rank from "components/content/Rank/rank";//排行模块
 import like from "components/content/GuessLike/like";//猜你喜欢模块
 import floors from "components/content/floor/floors";//多楼层模块
 
+
 export default {
   name: "home",
   components: {
@@ -27,7 +28,8 @@ export default {
     like,
     floors
 
-  }
+  },
+
 }
 </script>
 

@@ -5,13 +5,14 @@ import actions from "./actions"
 import modules from "./modules"
 import getters from "./getters"
 
+
 Vue.use(Vuex)
 const state = {
-
+  list: [],
 };
 export default new Vuex.Store({
   state,
-  getters,
+  getters,//简化获取store中的数据
   mutations,
   actions,
   modules
