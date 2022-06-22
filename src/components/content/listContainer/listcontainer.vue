@@ -8,11 +8,11 @@
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
-            <swiper>
-              <swiper-item>
-                <img src="@/assets/img/home/banner1.jpg"  alt=""/>
-              </swiper-item>
-            </swiper>
+              <swiper>
+                <swiper-item v-for="(item,index) in swipers" :key="index">
+                  <img :src="item.src" alt="">
+                </swiper-item>
+              </swiper>
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@
           </li>
         </ul>
         <div class="ads">
-          <img src="@/assets/img/home/ad1.png"  alt=""/>
+          <img src="@/assets/img/home/ad1.png" alt=""/>
         </div>
       </div>
     </div>
@@ -103,20 +103,51 @@
 </template>
 
 <script>
-import { Swiper, SwiperItem} from "components/common/swiper/index"//封装的轮播模块
+import {Swiper, SwiperItem} from "components/common/swiper/index"//封装的轮播模块
+
+import {mapState} from "vuex";
+
 export default {
   name: "listcontainer",
-  components:{
+  data() {
+    return {
+      swipers: [
+        {src: require('@/assets/img/home/banner1.jpg'), key: '0'},
+        {src: require('@/assets/img/home/banner2.jpg'), key: '1'},
+        {src: require('@/assets/img/home/banner3.jpg'), key: '2'},
+        {src: require('@/assets/img/home/banner4.jpg'), key: '3'},
+      ]
+    }
+  },
+  components: {
     Swiper,
     SwiperItem
+  },
+  mounted() {
+    /*发起请求，存储数据*/
+    this.$store.dispatch('getBanner')
+  },
+  computed: {
+    ...mapState({
+      /*这个是轮播图的数据*/
+      bannerList: state => state.bannerList
+    })
+  },
+  watch:{
+    // bannerList:{
+    //   handler(newValue,oldValue){
+    //this.$nextTick:{}
+    //   }
+    // }
   }
 }
 </script>
 
 <style scoped lang="less">
-li{
+li {
   list-style: none;
 }
+
 .list-container {
   width: 1200px;
   margin: 0 auto;
@@ -188,7 +219,7 @@ li{
           width: 25%;
 
           .list-item {
-      /*      background-image: url(./assets/img/home/icons.png);*/
+            /*      background-image: url(./assets/img/home/icons.png);*/
             background: url("~assets/img/home/icons.png");
             width: 61px;
             height: 40px;

@@ -9,6 +9,8 @@ import getters from "./getters"
 Vue.use(Vuex)
 const state = {
   list: [],
+  bannerList:[],
+  floorList:[]
 };
 export default new Vuex.Store({
   state,

@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import './mock/mockServe' //引入模拟的mock数据
+
 /*
 * 解决双击报错的问题
 * */

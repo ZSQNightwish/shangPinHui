@@ -5,7 +5,9 @@
     <recommend/>
     <rank/>
     <like/>
-    <floors/>
+    <floors v-for="(item,index) in floorList"
+            :key="item.id"
+            :list="item"/>
   </div>
 </template>
 
@@ -17,6 +19,7 @@ import rank from "components/content/Rank/rank";//排行模块
 import like from "components/content/GuessLike/like";//猜你喜欢模块
 import floors from "components/content/floor/floors";//多楼层模块
 
+import {mapState} from "vuex";
 
 export default {
   name: "home",
@@ -29,6 +32,14 @@ export default {
     floors
 
   },
+  mounted() {
+    this.$store.dispatch('getFloor')
+  },
+  computed: {
+    ...mapState({
+      floorList: state => state.floorList
+    })
+  }
 
 }
 </script>

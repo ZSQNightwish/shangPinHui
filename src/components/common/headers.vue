@@ -49,8 +49,7 @@
           <button
             class="sui-btn btn-xlarge btn-danger"
             type="button"
-            @click="searchClick"
-          >搜索
+            @click="searchClick">搜索
           </button>
 
         </form>
@@ -64,20 +63,17 @@ export default {
   name: "headers",
   methods: {
     searchClick() {
-      /*路由传参  携带参数*/
-      /*    this.$router.push('/search'+this.keywords)*/
-      /*     this.$router.push(`/search/${this.keywords}?k=${this.keywords.toUpperCase()}`)*/
-      /*对象写法*/
-      this.$router.push({
-        /*给路由起一个名字    name: 'search',，*/
-        name: 'search',
-        params: {
-          keywords: this.keywords
-        },
-        query: {
-          k: this.keywords.toUpperCase()
+      //如果路径中有query参数，也带过去  合并参数
+      if (this.$route.query) {
+        let location = {
+          name: 'search',
+          params: {
+            keywords: this.keywords || undefined
+          }
         }
-      })
+        location.query = this.$route.query
+        this.$router.push(location)
+      }
     }
   },
   data() {

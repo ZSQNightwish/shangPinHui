@@ -24,7 +24,7 @@
                   @mouseleave="leave">
                 <a
                   :data-categoryName="item.categoryName"
-                  :data-categoryId="item.categoryId">{{ item.categoryName }}</a>
+                  :data-categoryId="item.categoryId" >{{ item.categoryName}}</a>
               </h3>
               <div class="item-list clearfix">
                 <div class="subitem"
@@ -58,6 +58,7 @@
 <script>
 import {mapState} from 'vuex'
 import {debounce, throttle} from "../../../common/untils";//防抖 和节流函数
+
 export default {
   data() {
     return {
@@ -91,8 +92,12 @@ export default {
         } else {
           query.categoryId3 = categoryid3
         }
-        location.query = query;
-        this.$router.push(location)
+        //如果路由跳转的时候又params也带上，传过去
+        if (this.$route.params) {
+          location.params = this.$route.params
+          location.query = query;
+          this.$router.push(location)
+        }
       }
     }
   },
@@ -233,15 +238,19 @@ export default {
               display: block;
             }
           }
-/* vue 过去动画*/
+
+          /* vue 过去动画*/
+
           .sort-enter {
             height: 0;
           }
-          .sort-enter-to{
+
+          .sort-enter-to {
             height: 460px;
           }
+
           .hello-leave-active {
-           transition: height .3s ease;
+            transition: height .3s ease;
           }
         }
       }
