@@ -9,7 +9,7 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <swiper>
-                <swiper-item v-for="(item,index) in swipers" :key="index">
+                <swiper-item v-for="item in swipers" :key="item.key">
                   <img :src="item.src" alt="">
                 </swiper-item>
               </swiper>

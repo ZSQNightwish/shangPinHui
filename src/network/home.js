@@ -27,5 +27,23 @@ export const floorList = () => {
   })
 }
 
+/*
+*
+*
+* search 搜索界面的数据
+*export const reqSearchList = (data)=>request({url:"/list",method:'post',data});
+*
+* 这个是真实的数据，不是模拟的*/
+/*export const searchList = (data) => {
+  return request({
+    url: '/list',
+    methods: 'post',
+    data
 
-
+  })
+}*/
+export const searchList = (data) => request({
+  url: "/api/list",
+  method: 'post',
+  data
+});

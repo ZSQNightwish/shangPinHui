@@ -4,24 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li>索尼（SONY）</li>
-          <li>TCL</li>
-          <li>长虹（CHANGHONG）</li>
-          <li>飞利浦（PHILIPS）</li>
-          <li>风行电视</li>
-          <li><img src="@/assets/img/search/phone06.png" alt=""/></li>
-          <li><img src="@/assets/img/search/phone07.png"/></li>
-          <li><img src="@/assets/img/search/phone08.png"/></li>
-          <li><img src="@/assets/img/search/phone09.png"/></li>
-          <li><img src="@/assets/img/search/phone10.png"/></li>
-          <li><img src="@/assets/img/search/phone11.png"/></li>
-          <li><img src="@/assets/img/search/phone12.png"/></li>
-          <li><img src="@/assets/img/search/phone12.png"/></li>
-          <li><img src="@/assets/img/search/phone14.png"/></li>
-          <li><img src="@/assets/img/search/phone01.png"/></li>
-          <li><img src="@/assets/img/search/phone06.png"/></li>
-          <li><img src="@/assets/img/search/phone07.png"/></li>
-          <li><img src="@/assets/img/search/phone02.png"/></li>
+          <li v-for="item in trademarkList" :key="item.tmId">{{item.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -29,39 +12,12 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <div class="type-wrap">
-      <div class="fl key">网络制式</div>
+    <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
+      <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li>
-            <a>GSM（移动/联通2G）</a>
-          </li>
-          <li>
-            <a>电信2G</a>
-          </li>
-          <li>
-            <a>电信3G</a>
-          </li>
-          <li>
-            <a>移动3G</a>
-          </li>
-          <li>
-            <a>联通3G</a>
-          </li>
-          <li>
-            <a>联通4G</a>
-          </li>
-          <li>
-            <a>电信3G</a>
-          </li>
-          <li>
-            <a>移动3G</a>
-          </li>
-          <li>
-            <a>联通3G</a>
-          </li>
-          <li>
-            <a>联通4G</a>
+          <li v-for="(attrValue,index) in attr.attrValueList" :key="index">
+            <a>{{attrValue}}</a>
           </li>
         </ul>
       </div>
@@ -159,8 +115,16 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: 'SearchSelector',
+  computed:{
+    ...mapGetters([
+      'trademarkList',
+      'attrsList'
+    ])
+  }
 }
 </script>
 
@@ -192,16 +156,15 @@ export default {
       background: #f1f1f1;
       line-height: 26px;
       text-align: right;
-      padding: 10px 10px 0 15px;
+      padding: 10px 10px 0 3px;
       float: left;
     }
 
     .value {
       overflow: hidden;
-      padding: 10px 0 0 15px;
       color: #333;
       margin-left: 120px;
-      padding-right: 90px;
+      padding: 10px 90px 0 15px;
 
       .logo-list {
         li {
@@ -257,7 +220,6 @@ export default {
         text-align: center;
         vertical-align: middle;
         cursor: pointer;
-        padding: 0 10px;
         background: #fff;
         border: 1px solid #d5d5d5;
       }
