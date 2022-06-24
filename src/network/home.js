@@ -34,16 +34,9 @@ export const floorList = () => {
 *export const reqSearchList = (data)=>request({url:"/list",method:'post',data});
 *
 * 这个是真实的数据，不是模拟的*/
-/*export const searchList = (data) => {
-  return request({
-    url: '/list',
-    methods: 'post',
-    data
-
-  })
-}*/
-export const searchList = (data) => request({
+export const searchList = (params) => request({
   url: "/api/list",
   method: 'post',
-  data
+  data: params
 });
+

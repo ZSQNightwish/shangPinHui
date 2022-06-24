@@ -33,8 +33,8 @@ export default {
 * 搜索界面的网络数据
 *
 * */
-  async getSearch({commit},data) {
-    let result = await searchList(data);
+  async getSearch({commit},params={}) {
+    let result = await searchList(params);
     console.log(result);
     if (result.code === 200) {
       commit('setSearchList', result.data);

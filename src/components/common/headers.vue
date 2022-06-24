@@ -51,7 +51,6 @@
             type="button"
             @click="searchClick">搜索
           </button>
-
         </form>
       </div>
     </div>
@@ -80,6 +79,12 @@ export default {
     return {
       keywords: ''
     }
+  },
+  mounted() {
+    //通过全局事件总线 清除关键字
+    this.$bus.$on('clear', () => {
+      this.keywords = ''
+    })
   }
 };
 </script>

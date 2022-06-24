@@ -4,7 +4,10 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="item in trademarkList" :key="item.tmId">{{item.tmName}}</li>
+          <li v-for="(item,index) in trademarkList"
+              :key="item.tmId"
+              @click="tradeClick(item)">{{ item.tmName }}
+          </li>
         </ul>
       </div>
       <div class="ext">
@@ -12,12 +15,16 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
-    <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
-      <div class="fl key">{{attr.attrName}}</div>
+    <div class="type-wrap"
+         v-for="attr in attrsList"
+         :key="attr.attrId">
+      <div class="fl key">{{ attr.attrName }}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attrValue,index) in attr.attrValueList" :key="index">
-            <a>{{attrValue}}</a>
+          <li v-for="(attrValue,index) in attr.attrValueList"
+              :key="index"
+              @click=" attrClick(attr,attrValue)">
+            <a>{{ attrValue }}</a>
           </li>
         </ul>
       </div>
@@ -119,11 +126,21 @@ import {mapGetters} from "vuex";
 
 export default {
   name: 'SearchSelector',
-  computed:{
+  computed: {
     ...mapGetters([
       'trademarkList',
       'attrsList'
     ])
+  },
+  methods: {
+    tradeClick(item) {
+      this.$emit('trandmarkInfo', item)
+    },
+    /*这里点击商品的属性：型号：11 12  13  型号是属性：属性值，需要在首页展示和整理数据
+    * 所以也需要自定义事件发射出去；需要传递属性和属性值的数据*/
+    attrClick(attr, attrValue) {
+      this.$emit('attrInfo', attr, attrValue)
+    }
   }
 }
 </script>

@@ -12,39 +12,33 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 下列都是面包屑关于的展示：：           分类的面包屑-->
+            <li class="with-x" v-show="searchParams.categoryName">{{ searchParams.categoryName }}<i @click="removeName">×</i>
+            </li>
+            <!--            关键字的面包屑-->
+            <li class="with-x" v-show="searchParams.keywords">{{ searchParams.keywords }}<i @click="removeKeyword">×</i>
+            </li>
+            <!--     品牌 trandmark的面包屑-->
+            <li class="with-x" v-show="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i
+              @click="removetrademark">×</i>
+            </li>
+            <!--    售卖属性的展示：比如 型号，内存啥的 因为里面的属性很多，需要截取  -->
+            <li class="with-x" v-for="(item,index) in searchParams.props"
+                :key="index">{{ item.split(':')[1] }}<i
+              @click="removeProps(index)">×</i>
+            </li>
           </ul>
         </div>
-
         <!--selector-->
-        <search-selector/>
-
+        <search-selector @trandmarkInfo="trandmarkInfo"
+                         @attrInfo="attrInfo"/>
         <!--details-->
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
-                </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
-                </li>
+                <li :class="{active:isOne}" @click="changeSort('1')"><a>综合<span v-show="isOne">↑</span></a></li>
+                <li :class="{active:isTwo}" @click="changeSort('2')"><a>价格<span v-show="isTwo">↓</span></a></li>
               </ul>
             </div>
           </div>
@@ -124,24 +118,16 @@ export default {
   data() {
     return {
       searchParams: {
-        //产品相应的id
-        category1Id: "",
+        category1Id: "",//产品相应的id
         category2Id: "",
         category3Id: "",
-        //产品的名字
-        categoryName: "",
-        //搜索的关键字
-        keyword: "",
-        //排序:初始状态应该是综合且降序
-        order: "1:desc",
-        //第几页
-        pageNo: 1,
-        //每一页展示条数
-        pageSize: 3,
-        //平台属性的操作
-        props: [],
-        //品牌
-        trademark: "",
+        categoryName: "", //产品的名字
+        keywords: "", //搜索的关键字
+        order: "1:desc", //排序:初始状态应该是综合且降序 参数：{1：综合 ；2：价格  asc：升序 decs：降序}
+        pageNo: 1, //第几页
+        pageSize: 10, //每一页展示条数
+        props: [], //平台属性的操作
+        trademark: "",//品牌
       },
     }
   },
@@ -159,9 +145,85 @@ export default {
     * */
     getSearchDate() {
       this.$store.dispatch('getSearch', this.searchParams)
+    },
+    removeName() {
+      this.searchParams.categoryName = '';//只是清空了分类标签；还需要清除下面展示的该分类的数据
+      //所以还需要发送请求置空之前的数据
+      // this.searchParams.category1Id = '';
+      // this.searchParams.category2Id = '';
+      // this.searchParams.category3Id = '';
+      //上方的写法也可以，还是上方还会把字段带给服务器，当为underfined时不会带给服务器；减少占带宽
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
+      this.getSearchDate();
+      //删除的同时，也需要更改地址栏的参数
+      if (this.$route.params) {
+        this.$router.push({name: 'search', params: this.$route.params})
+      }
+    },
+    removeKeyword() {
+      this.searchParams.keywords = undefined
+      //再次发送请求
+      this.getSearchDate();
+      /*清空搜索框的keyword*/
+      this.$bus.$emit('clear')
+      if (this.$route.query) {
+        this.$router.push({name: 'search', query: this.$route.query})
+      }
+    },
+    removetrademark() {
+      this.searchParams.trademark = '';
+      this.getSearchDate();
+    },
+    removeProps(index) {
+      console.log(index);
+      this.searchParams.props.splice(index, 1)
+      this.getSearchDate();
+    },
+    trandmarkInfo(item) {
+      console.log('我是父组件', item);
+      this.searchParams.trademark = `${item.tmId}:${item.tmName}`;
+      this.getSearchDate();
+    },
+    attrInfo(attr, attrValue) {
+      // console.log(attr, attrValue);
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
+      /*这里的判断是 点击在面包屑上展示，但是一直点击就会一直展示
+      * 所以就需要去重，如果这个面包屑已经有了，就不push*/
+      if (this.searchParams.props.indexOf(props) === -1) {
+        this.searchParams.props.push(props)
+      }
+      this.getSearchDate();
+    },
+    /*排序操作*/
+    changeSort(flag) {
+      //flag 是一个标记 代表用户点击的是综合1 还是价格2 用户点击的时候传递进来
+      // let originOrder = this.searchParams.order
+      //下方获取的是 最初始的状态
+      let originFlag = this.searchParams.order.split(':')[0]//代表1还是2
+      let originSort = this.searchParams.order.split(':')[1]//代表升序还是降序 默认是desc
+      // console.log(originFlag);console.log(originSort);
+      let newOrder = ''
+      //点击的是综合 1是综合  2是价格；如果是1判断综合：升？降 默认是desc 如果等于desc就是降序，如果不等asc升序
+      if (flag === originFlag) {
+        newOrder = `${originFlag}:${originSort === "desc" ? "asc" : "desc"}`
+        //点击的是价格
+      } else {
+        newOrder = `${flag}:${'desc' ? "asc" : "desc"}`
+      }
+      //将新的值赋值给order 然后返回给服务器筛选 排序
+      this.searchParams.order = newOrder
+      this.getSearchDate();
     }
   },
   computed: {
+    isOne() {
+      return this.searchParams.order.indexOf('1') !== -1
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf('2') !== -1
+    },
     ...mapGetters([
       'goodsList',
     ])

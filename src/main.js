@@ -16,8 +16,12 @@ Router.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
+
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: h => h(App),
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  }
 }).$mount('#app')
