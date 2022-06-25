@@ -69,51 +69,28 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clear-fix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span class="pageLast">共10页&nbsp;</span></div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
+<!--    这里是先test 传一些假数据-->
+    <pages :pageNo="1" :pageSize="3" :total="91" :continues="5"/>
   </div>
+
 </template>
 
 <script>
 import index from "@/components/content/TypeNav/index";//搜索模块的 导航栏引入
 import searchSelector from "./searchChild/SearchSelector";
+import pages from "../../components/common/pages";//分页的模块
+
 import {mapGetters} from "vuex";//映射vuex的 仓库数据为 本地search数据
 
 export default {
   name: "search",
   components: {
     index,
-    searchSelector
+    searchSelector,
+    pages
   },
   data() {
     return {
@@ -206,13 +183,17 @@ export default {
       // console.log(originFlag);console.log(originSort);
       let newOrder = ''
       //点击的是综合 1是综合  2是价格；如果是1判断综合：升？降 默认是desc 如果等于desc就是降序，如果不等asc升序
+      //起始的状态是 综合1：降序desc
+      //如果用点击的是价格2，if判断不等，执行else;如果在此点击价格 执行if 起始状态改变相等，然后判断取反
       if (flag === originFlag) {
         newOrder = `${originFlag}:${originSort === "desc" ? "asc" : "desc"}`
         //点击的是价格
       } else {
-        newOrder = `${flag}:${'desc' ? "asc" : "desc"}`
+        newOrder = `${flag}:${'desc'}`
       }
-      //将新的值赋值给order 然后返回给服务器筛选 排序
+      //将新的值赋值给order 然后返回给服务器筛选排序
+      //如果用户在此点击价格 就会在执行if判断；此时originFlag已经被赋值 初始值变为了2 所以相等
+      //就会取反 在此发送请求筛选排序
       this.searchParams.order = newOrder
       this.getSearchDate();
     }
@@ -502,101 +483,6 @@ li {
                 }
               }
             }
-          }
-        }
-      }
-
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        position: relative;
-        bottom: 25px;
-        left: 50%;
-
-        .sui-pagination {
-          margin: 18px 0;
-
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
-
-            li {
-              line-height: 18px;
-              display: inline-block;
-
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
-
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
-
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
-
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
-
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
-
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
-
-          }
-
-          .pageLast {
-            position: relative;
-            top: 11px;
           }
         }
       }
