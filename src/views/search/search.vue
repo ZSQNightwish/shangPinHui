@@ -42,12 +42,15 @@
               </ul>
             </div>
           </div>
+          <!--          商品展示列表-->
           <div class="goods-list">
             <ul class="yui3-g">
               <li class="yui3-u-1-5" v-for="(item,index) in goodsList" :key="item.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="#" target="_blank"><img :src="item.defaultImg" alt=""></a>
+                    <router-link :to="`/detail/${item.id}`">
+                      <img :src="item.defaultImg" alt="">
+                    </router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -72,8 +75,12 @@
         </div>
       </div>
     </div>
-<!--    这里是先test 传一些假数据-->
-    <pages :pageNo="1" :pageSize="3" :total="91" :continues="5"/>
+    <!--    这里是先test 传一些假数据-->
+    <pages :pageNo="searchParams.pageNo"
+           :pageSize="searchParams.pageSize"
+           :total="total"
+           :continues="5"
+           @getPageNo="getPageNo"/>
   </div>
 
 </template>
@@ -83,7 +90,8 @@ import index from "@/components/content/TypeNav/index";//搜索模块的 导航�
 import searchSelector from "./searchChild/SearchSelector";
 import pages from "../../components/common/pages";//分页的模块
 
-import {mapGetters} from "vuex";//映射vuex的 仓库数据为 本地search数据
+import {mapGetters, mapState} from "vuex";//映射vuex的 仓库数据为 本地search数据
+
 
 export default {
   name: "search",
@@ -105,6 +113,8 @@ export default {
         pageSize: 10, //每一页展示条数
         props: [], //平台属性的操作
         trademark: "",//品牌
+        total: ''
+
       },
     }
   },
@@ -196,6 +206,14 @@ export default {
       //就会取反 在此发送请求筛选排序
       this.searchParams.order = newOrder
       this.getSearchDate();
+    },
+    /*
+    * 当前页数的回调
+    * */
+    getPageNo(pageNo) {
+      console.log(pageNo);
+      this.searchParams.pageNo = pageNo
+      this.getSearchDate()
     }
   },
   computed: {
@@ -207,7 +225,10 @@ export default {
     },
     ...mapGetters([
       'goodsList',
-    ])
+    ]),
+    ...mapState({
+      total: state => state.searchList.total
+    })
   },
   /*
   * 在组件挂载之前执行，把参数整理返回给后台

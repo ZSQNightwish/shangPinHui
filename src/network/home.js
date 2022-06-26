@@ -40,3 +40,13 @@ export const searchList = (params) => request({
   data: params
 });
 
+/*
+*
+* 商品详情的 请求
+*
+* */
+//请求的方式  url:"/api/item/{skuid}"
+export const detailsList = (skuid) => request({
+  url:`/api/item/${skuid}`,
+  methods:'get'
+})

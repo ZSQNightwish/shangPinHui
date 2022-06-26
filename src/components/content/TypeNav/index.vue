@@ -1,5 +1,5 @@
 <template>
-  <div class="type-nav">
+  <div class="type-nav" @>
     <div class="container">
       <h2 class="all">全部商品分类</h2>
       <nav class="nav">
@@ -24,7 +24,7 @@
                   @mouseleave="leave">
                 <a
                   :data-categoryName="item.categoryName"
-                  :data-categoryId="item.categoryId" >{{ item.categoryName}}</a>
+                  :data-categoryId="item.categoryId">{{ item.categoryName }}</a>
               </h3>
               <div class="item-list clearfix">
                 <div class="subitem"

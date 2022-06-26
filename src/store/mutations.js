@@ -10,5 +10,8 @@ export default {
   },
   setSearchList(state, searchList) {
     state.searchList = searchList
+  },
+  setDetailsList(state, detailsList) {
+    state.detailsList = detailsList
   }
 }

@@ -6,6 +6,7 @@ const home = () => import('../views/home/home')
 const login = () => import('../views/login/login')
 const register = () => import('../views/register/register')
 const search = () => import('../views/search/search')
+const detail = () => import('../views/details/detail')
 
 Vue.use(VueRouter)
 
@@ -19,30 +20,42 @@ const routes = [
   {
     path: '/home',
     component: home,
-    meta:{show:true}
+    meta: {show: true}
   },
   {
     path: '/login',
     component: login,
-    meta:{show:false}
+    meta: {show: false}
   },
   {
     path: '/register',
     component: register,
-    meta:{show:false}
+    meta: {show: false}
   },
   {
     path: '/search/:keywords',
-    name:'search',
+    name: 'search',
     component: search,
-    meta:{show:true}
+    meta: {show: true}
   },
+  {
+    path: '/detail/:skuid',
+    component: detail,
+    meta: {show: true}
+  }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  //vue原生的滚动效果
+  scrollBehavior(to, from, savePosition) {
+    //返回的y为0 代表滚动条在最上方
+    //效果 当你浏览一个页面到最底部的时候，滚动条也再最底部的，此时你要跳转到新的页面
+    //在新的页面里 滚动条应该在最顶部 才合理，而不是还在底部
+    return {y: 0}
+  }
 })
 
 export default router

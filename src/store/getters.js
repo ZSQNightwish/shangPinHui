@@ -10,5 +10,17 @@ export default {
   },
   attrsList(state) {
     return state.searchList.attrsList || [];
+  },
+  /*
+  *
+  *商品详情的数据简化
+  * */
+  categoryView(state) {
+    //这里需要判断;有组件挂载之后，数据还没有请求成功
+    return state.detailsList.categoryView || {}
+  },
+  //手机旁边的数据的简化
+  skuInfo(state) {
+    return state.detailsList.skuInfo || {}
   }
 }

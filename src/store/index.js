@@ -11,7 +11,8 @@ const state = {
   list: [],
   bannerList: [],
   floorList: [],
-  searchList: {}
+  searchList: {},
+  detailsList: {}
 };
 export default new Vuex.Store({
   state,

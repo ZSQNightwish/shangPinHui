@@ -2,7 +2,8 @@ import {
   categoryList,
   bannerList,
   floorList,
-  searchList
+  searchList,
+  detailsList
 } from '@/network/home'
 
 export default {
@@ -27,18 +28,30 @@ export default {
       commit('setFloorListList', result.data);
     }
   },
-/*
-*
-*
-* 搜索界面的网络数据
-*
-* */
-  async getSearch({commit},params={}) {
+  /*
+  *
+  *
+  * 搜索界面的网络数据
+  *
+  * */
+  async getSearch({commit}, params = {}) {
     let result = await searchList(params);
     console.log(result);
     if (result.code === 200) {
       commit('setSearchList', result.data);
     }
+  },
+  /*
+  *
+  * 商品细节的数据
+  *
+  *
+  * */
+
+  async getDetails({commit},skuid) {
+    let result = await detailsList(skuid);
+    if (result.code === 200) {
+      commit('setDetailsList', result.data);
+    }
   }
 }
-
