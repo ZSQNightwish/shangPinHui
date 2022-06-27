@@ -46,7 +46,16 @@ export const searchList = (params) => request({
 *
 * */
 //请求的方式  url:"/api/item/{skuid}"
-export const detailsList = (skuid) => request({
-  url:`/api/item/${skuid}`,
-  methods:'get'
+export const detailsList = (skuId) => request({
+  url: `/api/item/${skuId}`,
+  methods: 'get'
 })
+/*
+*
+* 将产品添加到购物车中 需要携带参数，告诉服务器我选中的是哪一个商品  id
+* */
+export const shopCartList = (skuId, skuNum) => request({
+  url: `/cart/addToCart/${skuId}/${skuNum}`,
+  method: 'post'
+});
+

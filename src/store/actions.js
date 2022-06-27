@@ -3,7 +3,8 @@ import {
   bannerList,
   floorList,
   searchList,
-  detailsList
+  detailsList,
+  shopCartList
 } from '@/network/home'
 
 export default {
@@ -48,10 +49,23 @@ export default {
   *
   * */
 
-  async getDetails({commit},skuid) {
-    let result = await detailsList(skuid);
+  async getDetails({commit}, skuId) {
+    let result = await detailsList(skuId);
     if (result.code === 200) {
       commit('setDetailsList', result.data);
+    }
+  },
+  /*
+  *
+  * 将产品添加到购物车
+  *添加成功 200 代表成功，不需要存储数据
+  * */
+  async getShopCart({commit}, {skuId, skuNum}) {
+    let result = await shopCartList(skuId, skuNum)
+    if (result.code === 200) {//200 代表成功
+      return 'ok'
+    } else {//加入购物车失败
+      return Promise.reject(new Error('sorry,failed to add to cart'))
     }
   }
 }

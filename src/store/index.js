@@ -12,7 +12,7 @@ const state = {
   bannerList: [],
   floorList: [],
   searchList: {},
-  detailsList: {}
+  detailsList: {},
 };
 export default new Vuex.Store({
   state,

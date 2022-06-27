@@ -211,7 +211,6 @@ export default {
     * 当前页数的回调
     * */
     getPageNo(pageNo) {
-      console.log(pageNo);
       this.searchParams.pageNo = pageNo
       this.getSearchDate()
     }

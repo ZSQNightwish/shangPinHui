@@ -23,14 +23,14 @@
         <!-- 右侧选择区域布局 -->
         <div class="InfoWrap">
           <div class="goodsDetail">
-            <h3 class="InfoName">{{skuInfo.skuName}}</h3>
-            <p class="news">{{skuInfo.skuDesc}}</p>
+            <h3 class="InfoName">{{ skuInfo.skuName }}</h3>
+            <p class="news">{{ skuInfo.skuDesc }}</p>
             <div class="priceArea">
               <div class="priceArea1">
                 <div class="title">价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</div>
                 <div class="price">
                   <i>¥</i>
-                  <em>{{skuInfo.price}}</em>
+                  <em>{{ skuInfo.price }}</em>
                   <span>降价通知</span>
                 </div>
                 <div class="remark">
@@ -62,40 +62,23 @@
 
           <div class="choose">
             <div class="chooseArea">
-              <div class="choosed"></div>
-              <dl>
-                <dt class="title">选择颜色</dt>
-                <dd changepirce="0" class="active">金色</dd>
-                <dd changepirce="40">银色</dd>
-                <dd changepirce="90">黑色</dd>
-              </dl>
-              <dl>
-                <dt class="title">内存容量</dt>
-                <dd changepirce="0" class="active">16G</dd>
-                <dd changepirce="300">64G</dd>
-                <dd changepirce="900">128G</dd>
-                <dd changepirce="1300">256G</dd>
-              </dl>
-              <dl>
-                <dt class="title">选择版本</dt>
-                <dd changepirce="0" class="active">公开版</dd>
-                <dd changepirce="-1000">移动版</dd>
-              </dl>
-              <dl>
-                <dt class="title">购买方式</dt>
-                <dd changepirce="0" class="active">官方标配</dd>
-                <dd changepirce="-240">优惠移动版</dd>
-                <dd changepirce="-390">电信优惠版</dd>
+              <dl v-for="item2 in spuSaleAttrList" :key="item2.id">
+                <dt class="title">{{ item2.saleAttrName }}</dt>
+                <dd v-for="saleValue in item2.spuSaleAttrValueList"
+                    :class="{active:saleValue.isChecked === 1}"
+                    :key="saleValue.id"
+                    @click="changeColor(saleValue,item2.spuSaleAttrValueList)">{{ saleValue.saleAttrValueName }}
+                </dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="count" @input="changeCount">
+                <button class="plus" @click="count++">+</button>
+                <button class="mins" @click="count >1? count--:1">-</button>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="goShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -213,7 +196,7 @@
           <div class="good-suits">
             <div class="master">
               <img :src="skuInfo.skuDefaultImg"/>
-              <p>￥{{skuInfo.price}}</p>
+              <p>￥{{ skuInfo.price }}</p>
             </div>
             <ul class="suits">
               <li class="suitsItem">
@@ -333,6 +316,11 @@ import {mapGetters} from "vuex";
 
 export default {
   name: 'detail',
+  data() {
+    return {
+      count: 1
+    }
+  },
   components: {
     index,
     footers,
@@ -345,14 +333,42 @@ export default {
     },
     hideList() {
       this.$refs.child.showList = false
+    },
+    changeColor(saleValue, arr) {
+      arr.forEach(item => {
+        item.isChecked = 0
+      })
+      saleValue.isChecked = 1
+    },
+    //修改产品的个数
+    changeCount(event) {
+      let value = event.target.value * 1
+      //处理非法文本内容
+      if (isNaN(value) || value < 1) {
+        this.count = 1
+      } else {
+        //正常大于1
+        this.count = parseInt(value)
+      }
+    },
+    // 加入购物车的回调 数据请求点击购物车发送请求
+    async goShopCart() {
+      try {
+        await this.$store.dispatch('getShopCart', {skuId: this.$route.params.skuId, skuNum: this.count});
+        this.$router.push({name:'shopcart'});
+      } catch (error) {
+        alert('failed')
+      }
+
+
     }
   },
   computed: {
     //产品信息的数据；手机旁边的数据
-    ...mapGetters(['categoryView','skuInfo'])
+    ...mapGetters(['categoryView', 'skuInfo', 'spuSaleAttrList'])
   },
   mounted() {
-    this.$store.dispatch('getDetails', this.$route.params.skuid)
+    this.$store.dispatch('getDetails', this.$route.params.skuId)
   }
 }
 </script>

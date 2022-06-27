@@ -22,5 +22,10 @@ export default {
   //手机旁边的数据的简化
   skuInfo(state) {
     return state.detailsList.skuInfo || {}
+  },
+  //产品信息简化
+  spuSaleAttrList(state) {
+    return state.detailsList.spuSaleAttrList || []
+
   }
 }

@@ -13,5 +13,6 @@ export default {
   },
   setDetailsList(state, detailsList) {
     state.detailsList = detailsList
-  }
+  },
+
 }

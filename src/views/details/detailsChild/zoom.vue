@@ -1,25 +1,52 @@
 <template>
   <div class="spec-preview">
     <img :src="skuInfo.skuDefaultImg" alt=""/>
-    <div class="event"></div>
+    <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img :src="skuInfo.skuDefaultImg"/>
+      <img :src="skuInfo.skuDefaultImg" ref="big"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
+
 export default {
   name: "zoom",
   computed: {
     ...mapGetters(['skuInfo'])
   },
+  data() {
+    return {
+    }
+  },
+  mounted() {
+    //全局事件总线接受 imgList传过来的自定义事件
+    this.$bus.$on('getIndex', (index) => {
+      this.currentIndex = index
+    })
+  },
+  methods: {
+    handler(event) {
+      let mask = this.$refs.mask
+      let big = this.$refs.big
+      let left = event.offsetX - mask.offsetWidth / 2
+      let top = event.offsetY - mask.offsetHeight / 2
+      if (left <= 0) left = 0
+      if (left >= mask.offsetWidth) left = mask.offsetWidth
+      if (top <= 0) top = 0
+      if (top >= mask.offsetHeight) top = mask.offsetHeight
+      mask.style.left = left + 'px'
+      mask.style.top = top + 'px'
+      big.style.left = -2 * left + 'px'
+      big.style.top = -2 * top + 'px'
+    }
+  }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 li {
   list-style: none;
 }
