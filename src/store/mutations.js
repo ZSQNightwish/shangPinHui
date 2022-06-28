@@ -14,5 +14,8 @@ export default {
   setDetailsList(state, detailsList) {
     state.detailsList = detailsList
   },
+  setCartList(state, mycartList) {
+    state.mycartList = mycartList
+  }
 
 }

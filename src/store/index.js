@@ -5,6 +5,7 @@ import actions from "./actions"
 import modules from "./modules"
 import getters from "./getters"
 
+import {getUUID} from "../common/untils"// 封装的游客临时身份 随机字符串
 
 Vue.use(Vuex)
 const state = {
@@ -13,6 +14,8 @@ const state = {
   floorList: [],
   searchList: {},
   detailsList: {},
+  uuid_token: getUUID(),//游客的临时身份id
+  mycartList: []
 };
 export default new Vuex.Store({
   state,

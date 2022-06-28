@@ -8,6 +8,7 @@ const register = () => import('../views/register/register')
 const search = () => import('../views/search/search')
 const detail = () => import('../views/details/detail')
 const shopcart = () => import('../views/shopCart/shopcart')
+const mycart = () => import('../views/shopCart/mycart')
 
 Vue.use(VueRouter)
 
@@ -48,7 +49,13 @@ const routes = [
     path: '/shopcart',
     name: 'shopcart',
     component: shopcart,
-    meta: {show:true}
+    meta: {show: true}
+  },
+  {
+    path: '/mycart',
+    name: 'mycart',
+    component: mycart,
+    meta: {show: true}
   }
 ]
 

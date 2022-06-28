@@ -73,9 +73,9 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" v-model="count" @input="changeCount">
-                <button class="plus" @click="count++">+</button>
-                <button class="mins" @click="count >1? count--:1">-</button>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @input="changeCount">
+                <button class="plus" @click="skuNum++">+</button>
+                <button class="mins" @click="skuNum >1? skuNum--:1">-</button>
               </div>
               <div class="add">
                 <a @click="goShopCart">加入购物车</a>
@@ -318,7 +318,7 @@ export default {
   name: 'detail',
   data() {
     return {
-      count: 1
+      skuNum: 1
     }
   },
   components: {
@@ -354,13 +354,17 @@ export default {
     // 加入购物车的回调 数据请求点击购物车发送请求
     async goShopCart() {
       try {
-        await this.$store.dispatch('getShopCart', {skuId: this.$route.params.skuId, skuNum: this.count});
-        this.$router.push({name:'shopcart'});
+        await this.$store.dispatch('getShopCart', {
+          skuId: this.$route.params.skuid,
+          skuNum: this.skuNum
+        });
+        //调用成功通知服务器 然后跳转到购物车界面
+        this.$router.push({name: 'shopcart',query:{skuNum:this.skuNum}});
+        //此处可以使用 会话存储  只能存储字符串
+        sessionStorage.setItem('skuInfo',JSON.stringify(this.skuInfo))
       } catch (error) {
-        alert('failed')
+        alert(error.message)
       }
-
-
     }
   },
   computed: {
@@ -368,7 +372,7 @@ export default {
     ...mapGetters(['categoryView', 'skuInfo', 'spuSaleAttrList'])
   },
   mounted() {
-    this.$store.dispatch('getDetails', this.$route.params.skuId)
+    this.$store.dispatch('getDetails', this.$route.params.skuid)
   }
 }
 </script>

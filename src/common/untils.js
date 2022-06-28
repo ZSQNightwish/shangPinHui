@@ -15,7 +15,7 @@ export function debounce(fn, delay) {
 export function throttle(func, wait, options = {}) {
   let timeout,
     previous = 0
-  return function() {
+  return function () {
     let now = +new Date()
     let remain = wait - (now - previous)
 
@@ -64,6 +64,22 @@ export function formatDate(date, fmt) {
 
   return fmt;
 }
+
 function padLeftZero(str) {
   return ("00" + str).substr(str.length);
+}
+
+//临时身份uuid 每次执行但是id不能变化 游客身份持久存储，id固定
+import {v4 as uuidv4} from 'uuid';//引入uuid文件
+export const getUUID = () => {
+  //首先从本地存储获取uuid 看下本地存储是否已经存在uuid
+  let uuid_token = localStorage.getItem('UUIDTOKEN');
+  //如果没有
+  if (!uuid_token) {
+    //生成游客的临时身份
+    uuid_token = uuidv4()
+    //本地存储进行存储这个 uuid
+    localStorage.setItem('UUIDTOKEN', uuid_token)
+  }
+  return uuid_token
 }

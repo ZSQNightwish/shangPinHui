@@ -55,7 +55,31 @@ export const detailsList = (skuId) => request({
 * 将产品添加到购物车中 需要携带参数，告诉服务器我选中的是哪一个商品  id
 * */
 export const shopCartList = (skuId, skuNum) => request({
-  url: `/cart/addToCart/${skuId}/${skuNum}`,
+  url: `/api/cart/addToCart/${skuId}/${skuNum}`,
   method: 'post'
 });
+/*
+*
+* 购物车的数据
+*
+* */
+export const mycartList = () => request({
+  url: 'api/cart/cartList',
+  methods: 'get'
+})
+/*
+*
+* 删除购物车产品数据
+* */
+export const deleteGoods = (skuId) => request({
+  url: `/api/cart/deleteCart/${skuId}`,
+  methods: 'delete'
+})
 
+/*
+* 修改商品的选中状态
+* */
+export const changeChecked = (skuId, isChecked) => request({
+  url: `/api/cart/checkCart/${skuId}/${isChecked}`,
+  methods: 'get'
+})

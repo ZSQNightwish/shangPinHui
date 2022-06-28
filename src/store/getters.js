@@ -27,5 +27,12 @@ export default {
   spuSaleAttrList(state) {
     return state.detailsList.spuSaleAttrList || []
 
+  },
+  /*
+  *关于购物车返回的数据的简化
+  *
+  */
+  mycartLists(state) {
+    return state.mycartList[0]
   }
 }
