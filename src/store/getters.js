@@ -33,6 +33,7 @@ export default {
   *
   */
   mycartLists(state) {
-    return state.mycartList[0]
+    return state.mycartList[0] || []
+
   }
 }

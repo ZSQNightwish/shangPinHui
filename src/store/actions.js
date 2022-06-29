@@ -7,8 +7,15 @@ import {
   shopCartList,
   mycartList,
   deleteGoods,
-  changeChecked
+  changeChecked,
+  CodeREQ,
+  userREQ,
+  loginREQ,
+  GETREQ,
+  logOutREQ
 } from '@/network/home'
+
+import {setTOKEN, removeTOKEN} from "@/common/token"//封装的 本地存储的token数据
 
 export default {
   async requestCatgeoryList({commit}) {
@@ -124,11 +131,70 @@ export default {
  * */
   updateIsAll({dispatch, state}, isChecked) {
     let PromiseAll = []
-    state.mycartLists[0].cartInfoList.forEach(item => {
+    state.mycartLists.cartInfoList.forEach(item => {
       let result = dispatch('changeStatus', {skuId: item.skuId, isChecked})
       PromiseAll.push(result)
     })
     return Promise.all(PromiseAll)
+  },
+  /*
+  * 获取验证码请求
+  * */
+  async getCode({commit}, phone) {
+    let result = await CodeREQ(phone)
+    //如果成功存储验证码
+    if (result.code === 200) {
+      commit('setCODE', result.data)
+    } else {
+      return Promise.reject(new Error('failed'))
+    }
+  },
+  /*
+  * 用户注册请求 这里user或起名字叫data 都可以
+  * */
+  async userRegister({commit}, user) {
+    let result = await userREQ(user)
+  },
+  /*
+* 登录请求
+* */
+  async userLogin({commit}, data) {
+    let result = await loginREQ(data)
+    //服务器下发的token 需要验证token和用户匹配 展示
+    //vuex 中存储的数据，一刷新就会消失，因为token需要持续化存储，so可以存储到本地
+    if (result.code === 200) {
+      commit('userLOGIN', result.data)
+      //持续化的存储token 存储到本地 然后使用getitem
+      // localStorage.setItem('TOKEN', result.data.token)
+      //下方的写法和上方一样，下方的是从外面引入封装的函数，
+      setTOKEN(result.data.token)
+    } else {
+      return Promise.reject(new Error('failed'))
+    }
+  },
+  /*
+  * 获取用户登录成功之后 去向服务器索取token数据展示 带着用户的token
+  * 需要把token存储到本地，添加到请求头里面
+  * */
+  async userInfo({commit}) {
+    let result = await GETREQ()
+    if (result.code === 200) {
+      commit('userINFOSS', result.data)
+    } else {
+      return Promise.reject(new Error('failed'))
+    }
+  },
+  /*
+  * 退出登录的请求
+  * */
+  async userlogOUT({commit}) {
+    let result = await logOutREQ()
+    console.log(result);
+    if (result.code === 200) {
+      commit('changeLogin')
+    }else {
+      return Promise.reject(new Error('failed'))
+    }
   }
 }
 

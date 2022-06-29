@@ -89,10 +89,10 @@ export default {
     async handler(type, num, item) {
       switch (type) {
         case'add': //判断给服务器变化的量
-          num = 1
+          num = 1;
           break;
         case 'minus'://判断产品大于1才可以传给服务器
-          num = item.skuNum > 1 ? -1 : 0
+          num = item.skuNum > 1 ? -1 : 0;
           break;
         case 'change'://判断文本框 是否是非法数字 或 负数，都是0；原来的值就不会变
           if (isNaN(num) || num < 1) {
@@ -127,7 +127,7 @@ export default {
     * */
     async updateChecked(item, event) {
       try {
-        let isChecked = event.target.checked ? '1' : '0'
+        let isChecked = event.target.checked ? '1' : '0';
         await this.$store.dispatch('changeStatus', {
           skuId: item.skuId, isChecked
         })
@@ -152,9 +152,9 @@ export default {
     * */
     async updateAll(event) {
       try {
-        let isChecked = event.target.checked ? '1' : '0'
+        let isChecked = event.target.checked ? '1' : '0';
         //派发actions
-        await this.$store.dispatch(' updateIsAll', isChecked)
+        await this.$store.dispatch('updateIsAll', isChecked)
         this.getMyCart();
       } catch (error) {
         alert(error.message)

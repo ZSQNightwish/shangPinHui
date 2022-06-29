@@ -15,7 +15,10 @@ const state = {
   searchList: {},
   detailsList: {},
   uuid_token: getUUID(),//游客的临时身份id
-  mycartList: []
+  mycartList: [],
+  user: '',
+  token:localStorage.getItem('token'),
+  userinfo: {}
 };
 export default new Vuex.Store({
   state,

@@ -24,7 +24,10 @@ export function request(config) {
       //给请求头添加一个请求头
       config.headers.userTempId = store.state.uuid_token
     }
-    //加载进度条
+    //如果有token需要带给服务器
+    if (store.state.token.token) {
+      config.headers.token = store.state.token.token
+    }
     nprogress.start();
     console.log(store);
     return config

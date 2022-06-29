@@ -83,3 +83,4 @@ export const getUUID = () => {
   }
   return uuid_token
 }
+

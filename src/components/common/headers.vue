@@ -6,16 +6,16 @@
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
           <!-- 没有用户名：未登录 -->
-          <p>
+          <p v-if="!userinfo.name">
             <span>请</span>
             <!-- 声明式导航：router-link务必要有to属性 -->
             <router-link to="/login">登录</router-link>
             <router-link class="register" to="/register">免费注册</router-link>
           </p>
           <!-- 登录了 -->
-          <p>
-            <a>用户名</a>
-            <a class="register">退出登录</a>
+          <p v-else>
+            <a>{{ userinfo.name }}</a>
+            <a class="register" @click="loginOUT">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "headers",
   methods: {
@@ -73,6 +75,16 @@ export default {
         location.query = this.$route.query
         this.$router.push(location)
       }
+    },
+    //退出登录
+    async loginOUT() {
+      try {
+        await this.$store.dispatch('userlogOUT');
+        //当点击退出登录按钮的时候，需要清空本地存储数据和回到首页
+        this.$router.push('home')
+      } catch (error) {
+        alert(error.message())
+      }
     }
   },
   data() {
@@ -85,6 +97,10 @@ export default {
     this.$bus.$on('clear', () => {
       this.keywords = ''
     })
+
+  },
+  computed: {
+    ...mapState(['userinfo'])
   }
 };
 </script>

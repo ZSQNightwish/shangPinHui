@@ -34,13 +34,14 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getFloor')
+    //当用户登录成功之后，在首页展示信息派发actions
+    // this.$store.dispatch('userInfo')
   },
   computed: {
     ...mapState({
       floorList: state => state.floorList
     })
   }
-
 }
 </script>
 
